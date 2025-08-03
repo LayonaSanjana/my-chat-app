@@ -23,7 +23,7 @@ function LandingPage() {
       buttonRing: "focus:ring-yellow-400",
       // themeToggleBg and themeToggleIconStroke are removed as toggle button is gone
       logoFilter: "filter brightness-175 contrast-125 drop-shadow-md", // Applicable if logo image is inherently dark
-      logoSrc: "/public/thumbnail_image-removebg-preview1.png", // Only light logo path (for dark backgrounds)
+      logoSrc: "/thumbnail_image-removebg-preview1.png", // Only light logo path (for dark backgrounds)
     }
   };
 
