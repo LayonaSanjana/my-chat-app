@@ -1,0 +1,1075 @@
+/* ==========================================================================
+   GLOBAL / BASE STYLES
+   ========================================================================== */
+
+/* Define a fixed color palette for the dark gradient look */
+:root {
+  --bg-primary-gradient-start: #1a1a2e; /* Dark blue/purple background start */
+  --bg-primary-gradient-via: #1f203b;   /* Mid blue/purple background via */
+  --bg-primary-gradient-end: #282a4a;   /* End blue/purple background end */
+
+  --bg-card: #282a4a; /* Background for cards, sidebar, etc. */
+  --bg-chat-bubble-assistant: #383c42; /* Even lighter for assistant chat bubbles */
+  --bg-input: #383c42; /* Background for input fields */
+
+  --text-color-main: #e0e0e0; /* Main light text */
+  --text-color-secondary: #a0a0b0; /* Secondary light text for placeholders/subtle info */
+  --text-color-dim: #707080; /* Dim text for disclaimers */
+
+  --accent-blue-main: #6a5acd; /* Primary purple-blue accent */
+  --accent-blue-hover: #5a4bbd; /* Darker purple-blue for hover */
+  --accent-yellow-main: #f0b800; /* A golden yellow */
+  --accent-yellow-hover: #d09a00; /* Darker golden yellow */
+  --accent-red-main: #ff4d4d; /* A clear red for alerts/logout */
+
+  --shadow-light: rgba(0, 0, 0, 0.2);
+  --shadow-medium: rgba(0, 0, 0, 0.4);
+  --shadow-strong: rgba(0, 0, 0, 0.6);
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --border-medium: rgba(106, 90, 205, 0.3);
+}
+
+
+/* Global HTML, Body, Root */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Set fixed gradient background for the entire application */
+  background: linear-gradient(to bottom right, var(--bg-primary-gradient-start), var(--bg-primary-gradient-via), var(--bg-primary-gradient-end));
+  color: var(--text-color-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* App container - No longer needs theme variables for background */
+.app-container {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  /* Background is now handled by body/html */
+  transition: none; /* No theme transition needed here */
+}
+
+/* Common button styles */
+.button {
+  background-color: var(--accent-blue-main);
+  color: var(--text-color-main);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  margin: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
+}
+
+.button:hover {
+  background-color: var(--accent-blue-hover);
+  transform: translateY(-2px);
+}
+
+/* Base style for internal content pages (cards) */
+.page-container {
+  background: var(--bg-card);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px var(--shadow-strong);
+  text-align: center;
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 90vh;
+  width: 90vw;
+  max-width: 900px;
+  max-height: 700px;
+  color: var(--text-color-main);
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+/* Generic Header bar used across internal pages */
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: none;
+}
+
+.header-bar h2 {
+  margin: 0;
+  font-size: 2em;
+  color: var(--text-color-main);
+}
+
+.header-icon {
+  font-size: 2em;
+  color: var(--accent-blue-main);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.header-icon:hover {
+  color: var(--accent-blue-hover);
+}
+
+.header-icon-placeholder {
+    width: 2em;
+}
+
+/* Small logout button found on some pages (e.g., Client History Report) */
+.logout-btn-small {
+  background-color: var(--accent-red-main);
+  color: rgba(131, 128, 128, 0.171);
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-size: 0.9em;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn-small:hover {
+  background-color: var(--accent-red-main);
+  opacity: 0.9;
+}
+
+
+/* Common large mic button (used in Voice Assistance) */
+.mic-button-lg {
+  background-color: var(--accent-yellow-main);
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 5px 15px var(--shadow-medium);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  position: relative;
+  line-height: 1;
+  font-size: 0; /* IMPORTANT: Set parent font-size to 0 to prevent text-node spacing around icon */
+}
+
+.mic-button-lg:hover {
+  background-color: var(--accent-yellow-hover);
+  transform: scale(1.05);
+}
+
+.mic-button-lg.mic-active {
+  background-color: var(--accent-red-main);
+  animation: pulse 1.5s infinite;
+}
+
+.mic-icon-lg {
+  font-size: 3.5em;
+  color: var(--bg-primary-gradient-start); /* Dark color from primary background start */
+  vertical-align: middle;
+}
+
+
+/* ==========================================================================
+   KEYFRAME ANIMATIONS
+   ========================================================================== */
+
+/* Keyframe for pulse animation (used on active mic button) */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(255, 77, 77, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 77, 77, 0);
+  }
+}
+
+/* Keyframe for AI Thinking Dot Pulse */
+@keyframes dotPulse {
+  0%, 100% { transform: scale(0.8); opacity: 0.7; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+
+/* ==========================================================================
+   LANDING PAGE STYLES
+   ========================================================================== */
+
+.landing-page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(to bottom right, var(--bg-primary-gradient-start), var(--bg-primary-gradient-via), var(--bg-primary-gradient-end));
+  color: var(--text-color-main);
+  text-align: center;
+  padding: 20px;
+  transition: none;
+}
+
+.landing-page-title {
+  font-size: 2.5em;
+  margin-bottom: 25px;
+  color: var(--text-color-main);
+  font-weight: 600;
+}
+
+.landing-page-subtitle {
+  font-size: 1.5em;
+  margin-bottom: 50px;
+  color: var(--text-color-secondary);
+}
+
+.landing-page-button {
+  background-color: var(--accent-yellow-main);
+  color: var(--bg-primary-gradient-start);
+  padding: 15px 40px;
+  font-size: 1.2em;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px var(--shadow-medium);
+  transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
+}
+
+.landing-page-button:hover {
+  background-color: var(--accent-yellow-hover);
+  transform: translateY(-2px);
+}
+
+
+/* ==========================================================================
+   LOGIN PAGE STYLES
+   ========================================================================== */
+
+.login-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(to bottom right, var(--bg-primary-gradient-start), var(--bg-primary-gradient-via), var(--bg-primary-gradient-end));
+  color: var(--text-color-main);
+  position: relative;
+  transition: none;
+}
+
+.form-container {
+  background-color: var(--bg-card);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px var(--shadow-strong);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  z-index: 1;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-container h2 {
+  font-size: 2.2em;
+  color: var(--text-color-main);
+  margin-bottom: 35px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-input);
+  border-radius: 8px;
+  margin-bottom: 25px;
+  padding: 10px 15px;
+  border: 1px solid transparent;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-group:focus-within {
+  border-color: var(--accent-blue-main);
+  box-shadow: 0 0 0 2px rgba(106, 90, 205, 0.3);
+}
+
+.input-icon {
+  font-size: 1.5em;
+  color: var(--text-color-secondary);
+  margin-right: 15px;
+}
+
+.form-container input[type="text"],
+.form-container input[type="password"],
+.form-container input[type="tel"],
+.form-container input[type="email"] {
+  width: 100%;
+  padding: 5px 0;
+  border: none;
+  background-color: transparent;
+  color: var(--text-color-main);
+  font-size: 1.1em;
+  outline: none;
+}
+
+.form-container input::placeholder {
+  color: var(--text-color-secondary);
+}
+
+.forgot-password-container {
+  width: 100%;
+  text-align: right;
+  margin-top: -15px;
+  margin-bottom: 30px;
+}
+
+.forgot-password-link {
+  color: var(--accent-yellow-main);
+  text-decoration: none;
+  font-size: 0.95em;
+  transition: color 0.3s ease;
+}
+
+.forgot-password-link:hover {
+  color: var(--accent-yellow-hover);
+  text-decoration: underline;
+}
+
+.login-button {
+  background-color: var(--accent-yellow-main);
+  color: var(--bg-primary-gradient-start);
+  padding: 15px 40px;
+  font-size: 1.2em;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 250px;
+  margin-top: 20px;
+  box-shadow: 0 4px 10px var(--shadow-medium);
+  transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: var(--accent-yellow-hover);
+  transform: translateY(-2px);
+}
+
+.error-message {
+  color: var(--accent-red-main);
+  margin-top: -15px;
+  margin-bottom: 20px;
+  font-size: 0.9em;
+}
+
+.login-header-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 20px 40px;
+    border-bottom: none;
+    justify-content: flex-start;
+    box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   ADMIN HOME GRID STYLES
+   ========================================================================== */
+
+.home-page-container {
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 25px;
+  width: 100%;
+  max-width: 650px;
+  flex-grow: 1;
+  align-content: center;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  margin: auto;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.grid-item {
+  background-color: var(--bg-chat-bubble-assistant); /* Using a lighter dark background */
+  padding: 35px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  min-height: 140px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 10px var(--shadow-medium);
+  border: 1px solid var(--border-medium);
+}
+
+.grid-item:hover {
+  background-color: var(--bg-card); /* Slightly darker on hover */
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px var(--shadow-strong);
+}
+
+.grid-icon {
+  font-size: 3.5em;
+  color: var(--accent-blue-main);
+  margin-bottom: 15px;
+  transition: color 0.3s ease;
+}
+
+.grid-item:hover .grid-icon {
+  color: var(--accent-blue-hover);
+}
+
+.grid-item span {
+  font-size: 1.2em;
+  color: var(--text-color-main);
+  font-weight: 500;
+  text-align: center;
+}
+
+
+/* ==========================================================================
+   UPLOAD SOP PAGE STYLES
+   ========================================================================== */
+
+.upload-box {
+  border: 2px dashed var(--accent-blue-main);
+  border-radius: 10px;
+  padding: 50px;
+  text-align: center;
+  color: var(--text-color-main);
+  background-color: var(--bg-chat-bubble-assistant);
+  width: 80%;
+  max-width: 500px;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.upload-box p {
+  margin: 10px 0;
+  font-size: 1.1em;
+}
+
+.upload-box .upload-icon {
+  font-size: 4em;
+  color: var(--accent-blue-main);
+  margin-bottom: 20px;
+}
+
+.upload-status-message {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.95em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 5px var(--shadow-light);
+    max-width: 500px;
+    text-align: left;
+}
+.upload-status-message.success { background-color: #4CAF50; color: white; }
+.upload-status-message.error { background-color: var(--accent-red-main); color: white; }
+
+.uploaded-sops-list {
+    margin-top: 30px;
+    background-color: var(--bg-card);
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    text-align: left;
+    box-shadow: 0 2px 8px var(--shadow-medium);
+    border: 1px solid var(--border-medium);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.uploaded-sops-list h3 { color: var(--accent-blue-main); margin-top: 0; margin-bottom: 15px; font-size: 1.3em; border-bottom: 1px solid var(--border-medium); padding-bottom: 8px; }
+.uploaded-sops-list ul { list-style: disc; margin-left: 20px; padding: 0; color: var(--text-color-main); }
+.uploaded-sops-list li { margin-bottom: 8px; font-size: 0.95em; }
+.uploaded-sops-list p { font-style: italic; color: var(--text-color-secondary); font-size: 0.9em; }
+
+.upload-disclaimer { color: var(--text-color-secondary); font-size: 0.9em; margin-top: 15px; font-style: italic; max-width: 500px; text-align: center; }
+.upload-box.drag-over { border-color: var(--accent-yellow-main); box-shadow: 0 0 15px rgba(255, 193, 7, 0.5); }
+
+
+/* ==========================================================================
+   VOICE ASSISTANCE PAGE (ADMIN) STYLES
+   ========================================================================== */
+
+.voice-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.voice-content h2 {
+  font-size: 2.2em;
+  color: var(--text-color-main);
+  margin-bottom: 10px;
+}
+
+.voice-content p {
+  font-size: 1.3em;
+  color: var(--text-color-secondary);
+  margin-bottom: 50px;
+}
+
+
+/* ==========================================================================
+   CLIENT CHAT AND VOICE PAGE STYLES (GEMINI REDESIGN)
+   ========================================================================== */
+
+/* Main container for the entire Gemini-like page layout */
+.client-gemini-layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(to bottom right, var(--bg-primary-gradient-start), var(--bg-primary-gradient-via), var(--bg-primary-gradient-end));
+    color: var(--text-color-main);
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    transition: none;
+}
+
+/* --- Header Bar (Simplified with Aux & Logout/Mode Change) --- */
+.gemini-header-simplified {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    background-color: var(--bg-card);
+    border-bottom: none;
+    position: relative;
+    z-index: 20;
+    min-height: 60px;
+    transition: none;
+}
+
+/* Aux logo text in simplified header */
+.gemini-logo-text-simplified {
+    font-size: 1.3em;
+    font-weight: 500;
+    color: var(--text-color-main);
+}
+
+/* Container for Mode Change and Logout buttons */
+.gemini-header-right-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Specific styling for Mode Change Button (now just a placeholder for general settings) */
+.mode-change-button {
+    background-color: var(--bg-card);
+    color: var(--text-color-secondary);
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 0.85em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+.mode-change-button:hover {
+    background-color: var(--bg-chat-bubble-assistant);
+    color: var(--text-color-main);
+}
+
+.mode-change-button .feather {
+    font-size: 1.1em;
+}
+
+/* Specific styling for the top-right Logout button */
+.logout-button-gemini-style-minimal {
+    background-color: var(--bg-card);
+    color: var(--accent-red-main);
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+.logout-button-gemini-style-minimal:hover {
+    background-color: var(--bg-chat-bubble-assistant);
+    color: var(--accent-red-main);
+}
+
+
+/* --- Main Content Area (Greeting or Chat) --- */
+.gemini-main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.gemini-greeting {
+    font-size: 2.8em;
+    font-weight: 500;
+    color: var(--accent-blue-main);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.chat-area.gemini-chat-area {
+    flex-grow: 1;
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+    min-height: 50px;
+    overflow-y: auto;
+    padding: 0 10px;
+    background-color: transparent;
+    border-radius: 0;
+    margin-bottom: 0;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Chat Message Bubbles */
+.chat-message {
+    padding: 12px 18px;
+    border-radius: 20px;
+    margin-bottom: 0;
+    max-width: 75%;
+    word-wrap: break-word;
+    font-size: 1.05em;
+    line-height: 1.5;
+    position: relative;
+    box-shadow: 0 1px 3px var(--shadow-light);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.chat-message.assistant {
+    background-color: var(--bg-chat-bubble-assistant);
+    align-self: flex-start;
+    color: var(--text-color-main);
+    border-bottom-left-radius: 8px;
+}
+
+.chat-message.user, .chat-message.user-voice {
+    background-color: var(--accent-blue-main);
+    align-self: flex-end;
+    color: var(--text-color-main);
+    border-bottom-right-radius: 8px;
+}
+
+/* AI Thinking Indicator */
+.chat-message.assistant.thinking-indicator {
+    background-color: transparent;
+    align-self: flex-start;
+    box-shadow: none;
+    padding: 5px 10px;
+    margin-left: 0;
+    height: 30px;
+    display: flex;
+    align-items: center;
+}
+
+
+/* --- Floating Input Bar Container (bottom section) --- */
+.gemini-input-bar-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 10;
+    background-color: var(--bg-card);
+    transition: none;
+}
+
+.gemini-input-bar {
+    display: flex;
+    align-items: flex-end;
+    background-color: var(--bg-input);
+    border-radius: 28px;
+    padding: 10px 15px;
+    width: 100%;
+    max-width: 700px;
+    box-shadow: 0 2px 10px var(--shadow-medium);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gemini-input-plus-icon {
+    margin-right: 15px;
+    flex-shrink: 0;
+    align-self: center;
+}
+
+.gemini-chat-input {
+    flex-grow: 1;
+    border: none;
+    background-color: transparent;
+    color: var(--text-color-main);
+    font-size: 1.1em;
+    padding: 8px 0;
+    outline: none;
+    resize: none;
+    min-height: 20px;
+    max-height: 200px;
+    overflow-y: auto;
+    line-height: 1.5;
+    transition: color 0.3s ease;
+}
+
+.gemini-chat-input::placeholder {
+    color: var(--text-color-secondary);
+}
+
+.gemini-input-icons-right {
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+    margin-left: 15px;
+    flex-shrink: 0;
+    padding-bottom: 4px;
+}
+
+/* Base style for all icons in Gemini layout */
+.gemini-input-icons-right .gemini-icon {
+    font-size: 1.5em;
+    color: var(--text-color-secondary);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.gemini-input-icons-right .gemini-icon:hover {
+    color: var(--text-color-main);
+}
+
+/* Integrated Microphone Icon Styling (when active) */
+.gemini-input-icons-right .gemini-icon.mic-active {
+    color: var(--accent-blue-main);
+    animation: none;
+}
+
+.gemini-disclaimer {
+    font-size: 0.75em;
+    color: var(--text-color-dim);
+    text-align: center;
+    margin-top: 15px;
+    max-width: 600px;
+}
+
+
+/* --- Guided SOP Status Banner (re-styled for Gemini) --- */
+.guided-sop-status-banner {
+  background-color: var(--bg-chat-bubble-assistant);
+  color: var(--text-color-main);
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  width: 90%;
+  max-width: 700px;
+  font-weight: normal;
+  text-align: left;
+  box-shadow: 0 2px 5px var(--shadow-light);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.guided-sop-status-banner p {
+    margin: 0;
+    line-height: 1.4;
+    font-size: 0.95em;
+}
+
+.guided-sop-status-banner strong {
+    color: var(--accent-blue-main);
+}
+
+.guided-sop-status-banner .current-step-text {
+  font-weight: 500;
+  font-size: 1em;
+  color: var(--text-color-main);
+}
+
+.guided-sop-status-banner .guided-action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.guided-sop-status-banner .button.small-action-button {
+  background-color: var(--bg-card);
+  color: var(--accent-blue-main);
+  padding: 6px 12px;
+  font-size: 0.8em;
+  border-radius: 20px;
+  margin: 0;
+  box-shadow: none;
+  transition: background-color 0.2s ease, transform 0.1s ease, color 0.2s ease;
+}
+
+.guided-sop-status-banner .button.small-action-button:hover {
+  background-color: var(--bg-chat-bubble-assistant);
+  transform: translateY(-1px);
+}
+
+
+/* Weather Alert Banner Style (re-integrated) */
+.weather-alert-banner.gemini-style {
+    background-color: var(--bg-chat-bubble-assistant);
+    color: var(--text-color-main);
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    width: 90%;
+    max-width: 700px;
+    font-weight: normal;
+    text-align: left;
+    box-shadow: 0 2px 5px var(--shadow-light);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border: 1px solid var(--accent-red-main);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.weather-alert-banner.gemini-style p {
+    margin: 0;
+    line-height: 1.4;
+    font-size: 0.95em;
+}
+
+.weather-alert-banner.gemini-style .alert-text {
+    color: var(--accent-red-main);
+    font-weight: bold;
+}
+
+/* Weather Alert Toggle Container (for client to enable/disable weather voice alerts) */
+.weather-alert-toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 8px 15px;
+    background-color: var(--bg-card);
+    border-radius: 20px;
+    box-shadow: 0 1px 3px var(--shadow-light);
+    color: var(--text-color-secondary);
+    font-size: 0.9em;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.weather-alert-toggle-container .weather-toggle-label {
+    margin-left: 5px;
+}
+
+/* Re-styling the common toggle switch for this specific use */
+.weather-alert-toggle-container .toggle-switch {
+    width: 40px;
+    height: 22px;
+    margin: 0;
+}
+
+.weather-alert-toggle-container .toggle-switch .slider {
+    border-radius: 22px;
+    background-color: var(--text-color-secondary);
+}
+
+.weather-alert-toggle-container .toggle-switch .slider:before {
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+}
+
+.weather-alert-toggle-container .toggle-switch input:checked + .slider {
+    background-color: var(--accent-blue-main);
+}
+
+.weather-alert-toggle-container .toggle-switch input:checked + .slider:before {
+    transform: translateX(18px);
+}
+
+
+/* SOP Integration Styles (for Upload SOP) */
+.upload-status-message {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.95em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 5px var(--shadow-light);
+    max-width: 500px;
+    text-align: left;
+}
+.upload-status-message.success { background-color: #4CAF50; color: white; }
+.upload-status-message.error { background-color: var(--accent-red-main); color: white; }
+
+.uploaded-sops-list {
+    margin-top: 30px;
+    background-color: var(--bg-card);
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    text-align: left;
+    box-shadow: 0 2px 8px var(--shadow-medium);
+    border: 1px solid var(--border-medium);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.uploaded-sops-list h3 { color: var(--accent-blue-main); margin-top: 0; margin-bottom: 15px; font-size: 1.3em; border-bottom: 1px solid var(--border-medium); padding-bottom: 8px; }
+.uploaded-sops-list ul { list-style: disc; margin-left: 20px; padding: 0; color: var(--text-color-main); }
+.uploaded-sops-list li { margin-bottom: 8px; font-size: 0.95em; }
+.uploaded-sops-list p { font-style: italic; color: var(--text-color-secondary); font-size: 0.9em; }
+
+.upload-disclaimer { color: var(--text-color-secondary); font-size: 0.9em; margin-top: 15px; font-style: italic; max-width: 500px; text-align: center; }
+.upload-box.drag-over { border-color: var(--accent-yellow-main); box-shadow: 0 0 15px rgba(255, 193, 7, 0.5); }
+
+
+/* Client History Report Styles (Admin Dashboard) */
+.history-report-container {
+    justify-content: flex-start;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    overflow-y: auto;
+    background: linear-gradient(to bottom right, var(--bg-primary-gradient-start), var(--bg-primary-gradient-via), var(--bg-primary-gradient-end));
+    transition: none;
+}
+
+.report-controls {
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: var(--text-color-main);
+  font-size: 1.1em;
+}
+
+.select-dropdown {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: 5px;
+  padding: 8px 12px;
+  color: var(--text-color-main);
+  font-size: 1em;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23e0e0e0%22%20d%3D%22M287%20197.3l-11.4-11.4c-3.7-3.7-9.7-3.7-13.4%200l-123.6%20123.6-123.6-123.6c-3.7-3.7-9.7-3.7-13.4%200L5.4%20197.3c-3.7%203.7-3.7%209.7%200%2013.4l138.8%20138.8c3.7%203.7%209.7%203.7%2013.4%200l138.8-138.8c3.7-3.7%203.7-9.7%200-13.4z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat;
+  background-position: right 10px top 50%;
+  background-size: 12px;
+  padding-right: 30px;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.select-dropdown:focus {
+  outline: none;
+  border-color: var(--accent-blue-main);
+  box-shadow: 0 0 0 2px rgba(106, 90, 205, 0.3);
+}
+
+.chat-history-display {
+  background-color: var(--bg-card);
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  flex-grow: 1;
+  overflow-y: auto;
+  text-align: left;
+  border: 1px solid var(--border-medium);
+  box-shadow: inset 0 0 5px var(--shadow-light);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.history-message {
+  padding: 8px 0;
+  margin-bottom: 5px;
+  word-wrap: break-word;
+  font-size: 0.95em;
+  line-height: 1.4;
+  border-bottom: 1px dashed var(--border-subtle);
+}
+
+.history-message:last-child {
+  border-bottom: none;
+}
+
+.message-source {
+  color: var(--accent-yellow-main);
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.message-sender {
+  color: var(--accent-blue-main);
+  font-weight: 500;
+  margin-right: 5px;
+}
+
+.message-text {
+  color: var(--text-color-main);
+}
+
+.no-history-message {
+  color: var(--text-color-secondary);
+  text-align: center;
+  padding: 30px;
+  font-style: italic;
+}
+
+.report-disclaimer {
+  font-size: 0.8em;
+  color: var(--text-color-secondary);
+  margin-top: 20px;
+  text-align: center;
+}
