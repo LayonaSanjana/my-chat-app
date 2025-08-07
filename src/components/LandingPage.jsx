@@ -39,11 +39,11 @@ function LandingPage() {
       {/* Logo - Dynamically loads theme-optimized logo (now always the light version for dark background) */}
       {/* IMPORTANT: Please ensure '/assets/logos/ausgrid-logo-light.png' is the path
           to your company's logo version designed to be visible on dark backgrounds. */}
-      <img
+      {/* <img
         src={currentColors.logoSrc}
         alt="Company Logo"
         className={`w-48 sm:w-64 lg:w-80 h-auto mb-8 drop-shadow-xl animate-fade-in-down ${currentColors.logoFilter}`}
-      />
+      /> */}
 
 
       {/* Main Heading - "Wow Factor" with FIXED Readability */}
