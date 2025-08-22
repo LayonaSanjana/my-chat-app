@@ -790,8 +790,8 @@ const initialSOPData = [
     }
 ];
 
-// Paste the URL you copied from Azure here
-const functionUrl = "YOUR_AZURE_FUNCTION_URL";
+
+const functionUrl = "https://proxy-gemini-fvfud0b4fugkg5ht.southeastasia-01.azurewebsites.net/api/ChatWithGemini";
 
 function ClientChatAndVoice({ onLogout, chatHistoryKey = 'adminVoiceHistory' }) {
     const navigate = useNavigate();
