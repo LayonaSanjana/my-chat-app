@@ -791,7 +791,7 @@ const initialSOPData = [
 ];
 
 
-const functionUrl = "https://proxy-gemini-fvfud0b4fugkg5ht.southeastasia-01.azurewebsites.net/api/ChatWithGemini";
+const functionUrl = "https://proxy-gemini.azurewebsites.net/api/ChatWithGemini";
 
 function ClientChatAndVoice({ onLogout, chatHistoryKey = 'adminVoiceHistory' }) {
     const navigate = useNavigate();
